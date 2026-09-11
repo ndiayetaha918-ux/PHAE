@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Feu from '../components/Feu.astro';
+import Colline from '../components/Colline.astro';
+import Musee from '../components/Musee.astro';
+import Soirs from '../components/Soirs.astro';
+import Venir from '../components/Venir.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Base
+  title="Phare des Mamelles, musée national des Phares et Balises, Dakar"
+  description="Édifié en 1864 sur la plus haute des Mamelles, le plus ancien phare de Dakar abrite le premier musée national des Phares et Balises. Visite, horaires et accès."
+>
+  <Nav />
+  <main id="contenu">
+    <Hero />
+    <Feu />
+    <Colline />
+    <Musee />
+    <Soirs />
+    <Venir />
+  </main>
+  <Footer />
+</Base>

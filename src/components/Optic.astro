@@ -1,0 +1,192 @@
+---
+/* La lentille de Fresnel, en plan.
+   Ce n'est pas un ornement. C'est l'objet du lieu, dessiné à partir de
+   sa géométrie réelle: un œil central, des anneaux à échelons dont le
+   pas se resserre vers l'extérieur (chaque couronne traite une part
+   égale du flux, donc r augmente en racine carrée), une couronne de
+   prismes catadioptriques, puis la lanterne et ses montants.
+
+   Le balayage tourne en 5 secondes, la période réelle de l'optique. */
+
+interface Props {
+  /** Émettre le faisceau tournant. */
+  beam?: boolean;
+  class?: string;
+}
+const { beam = false, class: className = '' } = Astro.props;
+
+const C = 500;
+const R_EYE = 46;
+const R_OPTIC = 400;
+const ECHELONS = 16;
+
+/* r = racine carrée: couronnes d'aire égale, pas resserré vers le bord. */
+const echelons = Array.from({ length: ECHELONS }, (_, i) =>
+  +(R_EYE + (R_OPTIC - R_EYE) * Math.sqrt((i + 1) / ECHELONS)).toFixed(2),
+);
+
+/* Couronne catadioptrique: prismes plus larges, plus espacés. */
+const prisms = [416, 434, 452, 470];
+
+const R_GLASS = 482;
+
+/* Montants de la lanterne. */
+const astragals = Array.from({ length: 12 }, (_, i) => (i * 360) / 12);
+/* Joints de panneaux de l'optique. */
+const panels = [45, 135, 225, 315];
+
+const polar = (deg: number, r: number) => {
+  const a = ((deg - 90) * Math.PI) / 180;
+  return [+(C + r * Math.cos(a)).toFixed(2), +(C + r * Math.sin(a)).toFixed(2)];
+};
+const uid = 'optic';
+---
+
+<div class={`optic ${className}`} data-beam={beam ? '' : undefined}>
+  {beam && <div class="optic__beam" aria-hidden="true"></div>}
+  <div class="optic__glow" aria-hidden="true"></div>
+
+  <svg
+    class="optic__svg"
+    viewBox="0 0 1000 1000"
+    aria-hidden="true"
+    focusable="false"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <defs>
+      <radialGradient id={`${uid}-eye`}>
+        <stop offset="0%" stop-color="rgb(var(--light))" stop-opacity="0.95" />
+        <stop offset="45%" stop-color="rgb(var(--light))" stop-opacity="0.42" />
+        <stop offset="100%" stop-color="rgb(var(--light))" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id={`${uid}-fade`}>
+        <stop offset="55%" stop-color="#fff" stop-opacity="1" />
+        <stop offset="100%" stop-color="#fff" stop-opacity="0.18" />
+      </radialGradient>
+      <mask id={`${uid}-mask`}>
+        <rect width="1000" height="1000" fill={`url(#${uid}-fade)`} />
+      </mask>
+    </defs>
+
+    <g mask={`url(#${uid}-mask)`} fill="none" vector-effect="non-scaling-stroke">
+      <!-- Lanterne -->
+      <circle cx={C} cy={C} r={R_GLASS} class="ln ln--glass" />
+      {astragals.map((a) => {
+        const [x1, y1] = polar(a, R_OPTIC + 12);
+        const [x2, y2] = polar(a, R_GLASS);
+        return <line x1={x1} y1={y1} x2={x2} y2={y2} class="ln ln--astragal" />;
+      })}
+
+      <!-- Prismes catadioptriques -->
+      {prisms.map((r) => <circle cx={C} cy={C} r={r} class="ln ln--prism" />)}
+
+      <!-- Échelons dioptriques -->
+      {echelons.map((r, i) => (
+        <circle
+          cx={C}
+          cy={C}
+          r={r}
+          class="ln ln--echelon"
+          style={`--i:${i}; --n:${ECHELONS}`}
+        />
+      ))}
+
+      <!-- Joints de panneaux -->
+      {panels.map((a) => {
+        const [x1, y1] = polar(a, R_EYE + 4);
+        const [x2, y2] = polar(a, R_OPTIC);
+        return <line x1={x1} y1={y1} x2={x2} y2={y2} class="ln ln--panel" />;
+      })}
+
+      <!-- Œil central -->
+      <circle cx={C} cy={C} r={R_EYE * 2.7} fill={`url(#${uid}-eye)`} stroke="none" />
+      <circle cx={C} cy={C} r={R_EYE} class="ln ln--eye" />
+    </g>
+  </svg>
+</div>
+
+<style>
+  .optic {
+    position: relative;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    isolation: isolate;
+  }
+
+  .optic__svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .ln {
+    stroke: rgb(var(--light) / 0.5);
+    stroke-width: 1;
+  }
+  .ln--glass { stroke: rgb(var(--light) / 0.2); }
+  .ln--astragal { stroke: rgb(var(--light) / 0.22); }
+  .ln--prism { stroke: rgb(var(--light) / 0.3); stroke-width: 1.4; }
+  .ln--panel { stroke: rgb(var(--light) / 0.18); }
+  .ln--eye { stroke: rgb(var(--light) / 0.85); stroke-width: 1.6; }
+
+  /* Les échelons proches du centre portent plus de lumière. */
+  .ln--echelon {
+    stroke: rgb(var(--light) / calc(0.62 - (var(--i) / var(--n)) * 0.34));
+  }
+
+  /* Halo. Respire sur la même période que la rotation. */
+  .optic__glow {
+    position: absolute;
+    inset: -18%;
+    z-index: -1;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgb(var(--light) / 0.13) 0%,
+      rgb(var(--light) / 0.05) 32%,
+      transparent 66%
+    );
+    animation: optic-breathe var(--cadence) ease-in-out infinite;
+  }
+
+  /* Le faisceau. Un secteur étroit qui balaie en 5 secondes.
+     Animation CSS: elle tourne hors du fil principal et ne tombe pas
+     pendant le chargement de la page. */
+  .optic__beam {
+    position: absolute;
+    inset: -55%;
+    z-index: -1;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      rgb(var(--light) / 0.015) 3deg,
+      rgb(var(--light) / 0.1) 8deg,
+      rgb(var(--light) / 0.17) 11deg,
+      rgb(var(--light) / 0.06) 17deg,
+      rgb(var(--light) / 0.012) 27deg,
+      transparent 40deg,
+      transparent 360deg
+    );
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 8%, rgb(0 0 0 / 0.6) 42%, transparent 78%);
+    mask-image: radial-gradient(circle at 50% 50%, #000 8%, rgb(0 0 0 / 0.6) 42%, transparent 78%);
+    animation: optic-sweep var(--cadence) linear infinite;
+    transform-origin: 50% 50%;
+  }
+
+  @keyframes optic-sweep {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes optic-breathe {
+    0%, 100% { opacity: 0.72; }
+    50% { opacity: 1; }
+  }
+
+  /* Mouvement réduit: le faisceau reste, il ne tourne plus.
+     L'idée est conservée, le mouvement est retiré. */
+  @media (prefers-reduced-motion: reduce) {
+    .optic__beam { transform: rotate(28deg); animation: none; }
+    .optic__glow { animation: none; opacity: 0.9; }
+  }
+</style>

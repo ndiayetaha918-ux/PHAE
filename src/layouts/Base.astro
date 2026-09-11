@@ -1,0 +1,103 @@
+---
+import '../styles/app.css';
+import { identity, contact, museum, facts, openingHours } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? identity.url).toString();
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Museum',
+  name: `${identity.name}, ${identity.role}`,
+  description,
+  url: identity.url,
+  telephone: contact.phone,
+  email: contact.email,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: contact.address[0],
+    addressLocality: 'Dakar',
+    addressCountry: 'SN',
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: 14.7113, longitude: -17.5122 },
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      opens: '10:00',
+      closes: '18:00',
+      name: 'Musée',
+    },
+  ],
+  foundingDate: String(facts.built),
+  isAccessibleForFree: false,
+};
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#0a0c0f" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_SN" />
+    <meta property="og:site_name" content={identity.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link
+      rel="preload"
+      href="/fonts/archivo.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <script is:inline>
+      /* Marque le document avant la première peinture: sans cela les
+         éléments en révélation resteraient invisibles si le script
+         principal échoue. */
+      document.documentElement.classList.add('js');
+    </script>
+
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </head>
+
+  <body>
+    <a class="skip" href="#contenu">Aller au contenu</a>
+    <slot />
+
+    <script>
+      /* Un seul mécanisme de révélation pour tout le site.
+         IntersectionObserver, puis on cesse d'observer. Rien d'attaché
+         au scroll. */
+      const items = document.querySelectorAll<HTMLElement>('.reveal');
+      if (!('IntersectionObserver' in window)) {
+        items.forEach((el) => el.classList.add('is-in'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              entry.target.classList.add('is-in');
+              io.unobserve(entry.target);
+            }
+          },
+          { rootMargin: '0px 0px -12% 0px', threshold: 0.05 },
+        );
+        items.forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>

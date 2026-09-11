@@ -1,0 +1,95 @@
+---
+import Plate from './Plate.astro';
+
+/* La bascule nuit vers jour de la page. Elle n'a lieu qu'une fois, et
+   elle porte du contenu: la date de fondation fait le pont entre le
+   mécanisme et le lieu. */
+---
+
+<section class="band aube" data-ground="night">
+  <div class="wrap">
+    <div class="aube__inner">
+      <h2 class="title reveal">Allumé en 1864,<br />un an avant le port.</h2>
+      <p class="prose aube__prose reveal" style="--reveal-delay:90ms">
+        Quatre-vingt-six mille francs de travaux, sur une colline alors
+        vide. Le feu a précédé d’un an le port qu’il devait rendre abordable.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band section colline" id="la-colline" data-ground="day">
+  <div class="wrap">
+    <div class="colline__say">
+      <h2 class="title reveal">C’est la colline<br />qui porte le feu.</h2>
+      <div class="prose colline__prose reveal" style="--reveal-delay:80ms">
+        <p>
+          Les Mamelles sont deux collines volcaniques posées à l’extrémité de
+          la presqu’île du Cap-Vert. Le phare occupe la plus haute et la plus
+          occidentale, à quatre kilomètres de la pointe des Almadies, le point
+          le plus à l’ouest du continent africain.
+        </p>
+        <p>
+          La tour elle même ne mesure que seize mètres. Tout le reste de la
+          hauteur, ce sont cent vingt-six mètres de basalte.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <Plate name="colline" class="colline__plate reveal" sizes="100vw" />
+
+  <div class="wrap colline__view">
+    <h3 class="subtitle reveal">Depuis la galerie, la presqu’île entière.</h3>
+    <p class="prose reveal" style="--reveal-delay:70ms">
+      La plateforme fait le tour de la lanterne. On y suit la côte d’une
+      extrémité à l’autre, la pointe des Almadies à l’ouest et l’Atlantique
+      ouvert sur les cinquante-trois kilomètres que le feu parcourt chaque nuit.
+    </p>
+  </div>
+
+  <Plate name="panorama" class="colline__pano reveal" sizes="100vw" />
+</section>
+
+<style>
+  .aube {
+    /* La seule bascule de la page. Courte, franche, et elle porte
+       un fait plutôt qu'un effet. */
+    padding-block: clamp(5rem, 14vh, 9rem) clamp(7rem, 20vh, 13rem);
+    background: linear-gradient(
+      180deg,
+      var(--basalt-850) 0%,
+      var(--basalt-800) 34%,
+      #3a424e 72%,
+      #9aa0a2 90%,
+      var(--chalk-50) 100%
+    );
+  }
+  .aube__inner { max-width: 46rem; }
+  .aube__prose { margin-top: 1.5rem; max-width: 44ch; }
+
+  .colline { padding-top: 0; }
+  .colline__say { max-width: 46rem; padding-top: clamp(3rem, 8vh, 5rem); }
+  .colline__prose { margin-top: clamp(1.5rem, 3vw, 2.25rem); }
+
+  .colline__plate {
+    margin-top: clamp(3rem, 8vw, 5.5rem);
+    width: 100%;
+  }
+
+  .colline__view {
+    margin-top: clamp(3rem, 8vw, 5.5rem);
+    display: grid;
+    gap: 1.25rem;
+    align-items: start;
+  }
+  @media (min-width: 60rem) {
+    .colline__view {
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem, 6vw, 5rem);
+    }
+    .colline__view h3 { max-width: 16ch; }
+  }
+
+  .colline__pano { margin-top: clamp(2rem, 5vw, 3.5rem); width: 100%; }
+</style>

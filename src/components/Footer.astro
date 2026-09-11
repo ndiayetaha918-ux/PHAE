@@ -1,0 +1,81 @@
+---
+import { identity, contact } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="band foot" data-ground="day">
+  <div class="wrap foot__inner">
+    <div class="foot__mark">
+      <span class="foot__name">Phare des Mamelles</span>
+      <span class="foot__role">{identity.role}</span>
+    </div>
+
+    <div class="foot__meta">
+      <span>{contact.address.join(', ')}</span>
+      <a class="hit" href={`tel:${contact.phoneHref}`}>{contact.phone}</a>
+    </div>
+
+    <p class="foot__legal">
+      Site du Phare des Mamelles, {year}. Monument géré avec le Port Autonome
+      de Dakar.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .foot {
+    background: var(--ink-900);
+    color: var(--chalk-50);
+    --fg: var(--chalk-50);
+    --fg-muted: #9aa1a8;
+    --rule: rgb(255 255 255 / 0.14);
+    padding-block: clamp(3rem, 8vw, 5rem);
+  }
+
+  .foot__inner {
+    display: grid;
+    gap: 2rem;
+  }
+  @media (min-width: 54rem) {
+    .foot__inner {
+      grid-template-columns: 1fr auto;
+      align-items: end;
+    }
+    .foot__legal { grid-column: 1 / -1; }
+  }
+
+  .foot__mark { display: grid; gap: 0.5rem; }
+  .foot__name {
+    font-variation-settings: 'wdth' 108;
+    font-weight: 560;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.875rem;
+  }
+  .foot__role {
+    font-variation-settings: 'wdth' 112;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    font-size: 0.6875rem;
+    color: var(--fg-muted);
+  }
+
+  .foot__meta {
+    display: grid;
+    gap: 0.35rem;
+    font-size: 0.9375rem;
+    color: var(--fg-muted);
+  }
+  @media (min-width: 54rem) {
+    .foot__meta { text-align: right; }
+  }
+  .foot__meta a { color: var(--fg); }
+
+  .foot__legal {
+    margin: 0;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.8125rem;
+    color: var(--fg-muted);
+  }
+</style>

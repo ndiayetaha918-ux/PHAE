@@ -1,0 +1,278 @@
+---
+import { identity, nav } from '../data/site';
+---
+
+<header class="nav" id="nav" data-ground="night">
+  <div class="nav__inner">
+    <a class="mark" href="#haut" aria-label={`${identity.name}, retour en haut`}>
+      <span class="mark__name">Phare des Mamelles</span>
+      <span class="mark__role">{identity.role}</span>
+    </a>
+
+    <nav class="nav__links" aria-label="Sections">
+      {nav.slice(0, 4).map((item) => (
+        <a href={item.href}>{item.label}</a>
+      ))}
+    </nav>
+
+    <div class="nav__actions">
+      <a class="btn nav__cta" href="#venir">Venir</a>
+      <button
+        class="burger"
+        type="button"
+        aria-expanded="false"
+        aria-controls="menu"
+        aria-label="Ouvrir le menu"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="menu" id="menu" hidden>
+  <nav class="menu__list" aria-label="Menu principal">
+    {nav.map((item, i) => (
+      <a href={item.href} style={`--i:${i}`}>{item.label}</a>
+    ))}
+  </nav>
+</div>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    color: var(--fg);
+    transition: color var(--t-ui) var(--ease-out), background-color var(--t-ui) var(--ease-out);
+  }
+  /* Le bandeau n'apparaît qu'une fois la page quittée du haut. */
+  .nav[data-stuck] {
+    background: color-mix(in oklab, var(--bg) 82%, transparent);
+    backdrop-filter: saturate(1.4) blur(14px);
+    -webkit-backdrop-filter: saturate(1.4) blur(14px);
+    border-bottom: 1px solid var(--rule);
+  }
+  @supports not (backdrop-filter: blur(1px)) {
+    .nav[data-stuck] { background: var(--bg); }
+  }
+
+  .nav__inner {
+    max-width: var(--page);
+    margin-inline: auto;
+    padding: 0 var(--gutter);
+    height: 68px;
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 4vw, 3rem);
+  }
+
+  .mark {
+    text-decoration: none;
+    display: grid;
+    align-content: center;
+    gap: 0.28em;
+    margin-right: auto;
+    min-height: 44px;
+  }
+  .mark__name {
+    font-variation-settings: 'wdth' 108;
+    font-weight: 560;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.8125rem;
+    line-height: 1;
+  }
+  .mark__role {
+    font-variation-settings: 'wdth' 112;
+    font-size: 0.625rem;
+    letter-spacing: 0.09em;
+    line-height: 1;
+    color: var(--fg-muted);
+    text-transform: uppercase;
+  }
+  @media (max-width: 26rem) {
+    .mark__role { display: none; }
+  }
+
+  .nav__links {
+    display: none;
+    gap: clamp(1rem, 2.4vw, 2.2rem);
+    white-space: nowrap;
+  }
+  .nav__links a {
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-variation-settings: 'wdth' 102;
+    font-weight: 480;
+    color: var(--fg-muted);
+    transition: color var(--t-ui) var(--ease-out);
+    padding-block: 0.4em;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .nav__links a:hover { color: var(--fg); }
+  }
+  .nav__links a[aria-current='true'] { color: var(--fg); }
+
+  .nav__actions { display: flex; align-items: center; gap: 0.75rem; }
+  .nav__cta {
+    display: none;
+    padding: 0.7em 1.15em;
+    font-size: 0.8125rem;
+  }
+
+  .burger {
+    appearance: none;
+    background: none;
+    border: 1px solid var(--rule-strong);
+    color: inherit;
+    width: 42px;
+    height: 38px;
+    display: grid;
+    place-content: center;
+    gap: 5px;
+    cursor: pointer;
+    padding: 0;
+  }
+  .burger span {
+    display: block;
+    width: 17px;
+    height: 1px;
+    background: currentColor;
+    transition: transform var(--t-ui) var(--ease-out), opacity var(--t-ui) var(--ease-out);
+  }
+  .burger[aria-expanded='true'] span:first-child { transform: translateY(3px) rotate(45deg); }
+  .burger[aria-expanded='true'] span:last-child { transform: translateY(-3px) rotate(-45deg); }
+
+  @media (min-width: 60rem) {
+    .nav__links { display: flex; }
+    .nav__cta { display: inline-flex; }
+    .burger { display: none; }
+  }
+
+  /* ---- Panneau mobile ---- */
+  .menu {
+    position: fixed;
+    inset: 0;
+    z-index: 45;
+    background: var(--bg);
+    padding: 88px var(--gutter) var(--gutter);
+    display: grid;
+    align-content: start;
+    opacity: 0;
+    transform: translate3d(0, -8px, 0);
+    transition: opacity 220ms var(--ease-out), transform 220ms var(--ease-out);
+  }
+  .menu[data-open] { opacity: 1; transform: none; }
+
+  .menu__list { display: grid; }
+  .menu__list a {
+    text-decoration: none;
+    font-variation-settings: 'wdth' 94;
+    font-weight: 540;
+    letter-spacing: -0.02em;
+    font-size: clamp(2rem, 11vw, 3rem);
+    line-height: 1.16;
+    padding-block: 0.3em;
+    border-bottom: 1px solid var(--rule);
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+    transition:
+      opacity 320ms var(--ease-out) calc(var(--i) * 40ms + 60ms),
+      transform 320ms var(--ease-out) calc(var(--i) * 40ms + 60ms);
+  }
+  .menu[data-open] .menu__list a { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu, .menu__list a { transition-duration: 140ms; transform: none; }
+  }
+</style>
+
+<script>
+  const nav = document.getElementById('nav')!;
+  const menu = document.getElementById('menu')!;
+  const burger = document.querySelector<HTMLButtonElement>('.burger')!;
+
+  /* 1. Le bandeau ne se dessine qu'une fois le haut de page dépassé.
+        Une sentinelle observée vaut mieux qu'un écouteur de scroll. */
+  const sentinel = document.createElement('div');
+  sentinel.setAttribute('aria-hidden', 'true');
+  sentinel.style.cssText = 'position:absolute;top:0;height:1px;width:1px;';
+  document.body.prepend(sentinel);
+  new IntersectionObserver(
+    ([e]) => nav.toggleAttribute('data-stuck', !e.isIntersecting),
+    { threshold: 0 },
+  ).observe(sentinel);
+
+  /* 2. Le bandeau prend le fond de la bande qui passe dessous, pour
+        rester lisible au moment où la page bascule de la nuit au jour. */
+  const bands = document.querySelectorAll<HTMLElement>('.band[data-ground]');
+  const groundObserver = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          nav.dataset.ground = entry.target.getAttribute('data-ground') ?? 'night';
+        }
+      }
+    },
+    { rootMargin: '-69px 0px -99% 0px' },
+  );
+  bands.forEach((b) => groundObserver.observe(b));
+
+  /* 3. Section courante dans la navigation. */
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('.nav__links a')];
+  const targets = links
+    .map((a) => document.querySelector(a.getAttribute('href')!))
+    .filter(Boolean) as Element[];
+  const currentObserver = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const id = `#${entry.target.id}`;
+        links.forEach((a) => a.setAttribute('aria-current', String(a.getAttribute('href') === id)));
+      }
+    },
+    { rootMargin: '-30% 0px -60% 0px' },
+  );
+  targets.forEach((t) => currentObserver.observe(t));
+
+  /* 4. Panneau mobile. Il sort par où il est entré. */
+  let lastFocus: HTMLElement | null = null;
+
+  const open = () => {
+    lastFocus = document.activeElement as HTMLElement;
+    menu.hidden = false;
+    requestAnimationFrame(() => menu.setAttribute('data-open', ''));
+    burger.setAttribute('aria-expanded', 'true');
+    burger.setAttribute('aria-label', 'Fermer le menu');
+    document.body.style.overflow = 'hidden';
+    menu.querySelector('a')?.focus();
+  };
+
+  const close = () => {
+    menu.removeAttribute('data-open');
+    burger.setAttribute('aria-expanded', 'false');
+    burger.setAttribute('aria-label', 'Ouvrir le menu');
+    document.body.style.overflow = '';
+    const done = () => { menu.hidden = true; };
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) done();
+    else menu.addEventListener('transitionend', done, { once: true });
+    lastFocus?.focus();
+  };
+
+  burger.addEventListener('click', () =>
+    burger.getAttribute('aria-expanded') === 'true' ? close() : open(),
+  );
+  menu.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) close();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && burger.getAttribute('aria-expanded') === 'true') close();
+  });
+  const mq = matchMedia('(min-width: 60rem)');
+  mq.addEventListener('change', (e) => {
+    if (e.matches && burger.getAttribute('aria-expanded') === 'true') close();
+  });
+</script>

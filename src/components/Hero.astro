@@ -1,0 +1,119 @@
+---
+import Optic from './Optic.astro';
+---
+
+<section class="band hero" id="haut" data-ground="night">
+  <div class="hero__optic">
+    <Optic beam />
+  </div>
+
+  <div class="wrap hero__inner">
+    <div class="hero__text">
+      <h1 class="display hero__title">
+        <span>Cinq secondes</span>
+        <span>par tour,</span>
+        <span class="hero__since">depuis 1864.</span>
+      </h1>
+
+      <p class="lede hero__lede">
+        Le plus ancien phare de Dakar abrite le premier musée national
+        des Phares et Balises.
+      </p>
+
+      <a class="btn hero__cta" href="#le-musee">Visiter le musée</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    min-height: 100svh;
+    display: grid;
+    align-items: end;
+    overflow: hidden;
+    /* La nuit n'est pas plate: le ciel s'éclaircit vers l'horizon. */
+    background:
+      radial-gradient(120% 70% at 78% 38%, var(--basalt-800) 0%, transparent 62%),
+      linear-gradient(180deg, var(--basalt-900) 0%, var(--basalt-850) 78%, var(--basalt-800) 100%);
+  }
+
+  .hero__inner {
+    width: 100%;
+    padding-bottom: clamp(3rem, 9vh, 6.5rem);
+    padding-top: 1rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero__text { max-width: 38rem; }
+
+  .hero__title span { display: block; }
+  .hero__since {
+    /* Le chiffre porte la date. Contraste de graisse et de largeur,
+       jamais de changement de famille. */
+    font-variation-settings: 'wdth' 78;
+    font-weight: 300;
+    color: var(--fg-muted);
+  }
+
+  .hero__lede {
+    margin-top: clamp(1.25rem, 3vh, 2rem);
+    color: var(--fg-muted);
+    max-width: 30ch;
+  }
+
+  .hero__cta { margin-top: clamp(1.75rem, 4vh, 2.75rem); }
+
+  /* L'optique. Hors-cadre à droite, coupée par le bord: on est trop
+     près pour la voir entière, ce qui est le cas dans la lanterne. */
+  .hero__optic {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+  }
+  .hero__optic > :global(.optic) {
+    width: min(122vw, 118svh);
+    translate: 26% -22%;
+    opacity: 0.55;
+  }
+
+  @media (min-width: 60rem) {
+    .hero { align-items: center; }
+    .hero__inner { padding-block: 0; }
+    .hero__optic > :global(.optic) {
+      width: min(64vw, 108svh);
+      translate: 32% 0;
+      opacity: 1;
+    }
+  }
+
+  /* ---- Entrée ----
+     Une seule idée: le texte monte, l'optique s'allume derrière.
+     Décalages de 70 ms, rien de plus. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__title span,
+    .hero__lede,
+    .hero__cta {
+      animation: rise 780ms var(--ease-out) both;
+    }
+    .hero__title span:nth-child(1) { animation-delay: 80ms; }
+    .hero__title span:nth-child(2) { animation-delay: 150ms; }
+    .hero__title span:nth-child(3) { animation-delay: 220ms; }
+    .hero__lede { animation-delay: 330ms; }
+    .hero__cta { animation-delay: 400ms; }
+
+    .hero__optic { animation: lamp 1400ms var(--ease-out) 120ms both; }
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translate3d(0, 0.5em, 0); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes lamp {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+</style>
