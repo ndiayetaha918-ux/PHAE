@@ -20,38 +20,6 @@ export type Plate = {
 };
 
 export const plates: Record<string, Plate> = {
-  tour: {
-    key: 'tour',
-    src: '/media/tour-nuit.jpg',
-    alt: 'La tour du phare de nuit, le faisceau balayant le ciel au dessus de la colline.',
-    ratio: 4 / 5,
-    width: 2400,
-    ready: false,
-  },
-  lentille: {
-    key: 'lentille',
-    src: '/media/lentille.jpg',
-    alt: 'Gros plan de la lentille de Fresnel et de ses anneaux à échelons.',
-    ratio: 1,
-    width: 1600,
-    ready: false,
-  },
-  panorama: {
-    key: 'panorama',
-    src: '/media/panorama.jpg',
-    alt: 'Panorama sur la presqu’île du Cap-Vert depuis la galerie du phare.',
-    ratio: 16 / 7,
-    width: 3200,
-    ready: false,
-  },
-  colline: {
-    key: 'colline',
-    src: '/media/colline.jpg',
-    alt: 'La colline volcanique des Mamelles vue de loin, le phare à son sommet.',
-    ratio: 3 / 2,
-    width: 2400,
-    ready: false,
-  },
   archive: {
     key: 'archive',
     src: '/media/archive-1862.jpg',
