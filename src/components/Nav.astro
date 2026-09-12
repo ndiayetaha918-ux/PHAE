@@ -2,40 +2,29 @@
 import { identity, nav } from '../data/site';
 ---
 
-<header class="nav" id="nav" data-ground="night">
+<header class="nav" id="nav">
   <div class="nav__inner">
     <a class="mark" href="#haut" aria-label={`${identity.name}, retour en haut`}>
-      <span class="mark__name">Phare des Mamelles</span>
+      <span class="mark__nom">Phare des Mamelles</span>
       <span class="mark__role">{identity.role}</span>
     </a>
 
-    <nav class="nav__links" aria-label="Sections">
-      {nav.slice(0, 4).map((item) => (
-        <a href={item.href}>{item.label}</a>
-      ))}
+    <nav class="nav__liens" aria-label="Sections">
+      {nav.filter((i) => i.href !== '#venir').map((i) => <a href={i.href}>{i.label}</a>)}
     </nav>
 
     <div class="nav__actions">
       <a class="btn nav__cta" href="#venir">Venir</a>
-      <button
-        class="burger"
-        type="button"
-        aria-expanded="false"
-        aria-controls="menu"
-        aria-label="Ouvrir le menu"
-      >
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
+      <button class="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Ouvrir le menu">
+        <span aria-hidden="true"></span><span aria-hidden="true"></span>
       </button>
     </div>
   </div>
 </header>
 
 <div class="menu" id="menu" hidden>
-  <nav class="menu__list" aria-label="Menu principal">
-    {nav.map((item, i) => (
-      <a href={item.href} style={`--i:${i}`}>{item.label}</a>
-    ))}
+  <nav class="menu__liste" aria-label="Menu principal">
+    {nav.map((i, n) => <a href={i.href} style={`--i:${n}`}>{i.label}</a>)}
   </nav>
 </div>
 
@@ -44,25 +33,34 @@ import { identity, nav } from '../data/site';
     position: sticky;
     top: 0;
     z-index: 50;
-    color: var(--fg);
-    transition: color var(--t-ui) var(--ease-out), background-color var(--t-ui) var(--ease-out);
+    color: var(--texte);
+    transition: color 700ms var(--ease-in-out), background-color 700ms var(--ease-in-out);
   }
-  /* Le bandeau n'apparaît qu'une fois la page quittée du haut. */
-  .nav[data-stuck] {
-    background: color-mix(in oklab, var(--bg) 82%, transparent);
-    backdrop-filter: saturate(1.4) blur(14px);
-    -webkit-backdrop-filter: saturate(1.4) blur(14px);
-    border-bottom: 1px solid var(--rule);
+  .nav[data-pose] {
+    background: color-mix(in oklab, var(--fond) 88%, transparent);
+    backdrop-filter: saturate(1.3) blur(12px);
+    -webkit-backdrop-filter: saturate(1.3) blur(12px);
+    border-bottom: 1px solid var(--filet);
   }
-  @supports not (backdrop-filter: blur(1px)) {
-    .nav[data-stuck] { background: var(--bg); }
+  @supports not (backdrop-filter: blur(1px)) { .nav[data-pose] { background: var(--fond); } }
+
+  /* Dans la lanterne, la barre s'inverse avec la page. */
+  .nav[data-nuit] {
+    --fond: var(--basalte);
+    --texte: #f2f3f0;
+    --texte-tenu: #8a938f;
+    --filet: #ffffff26;
+    --filet-franc: #ffffff;
+    --btn-fond: #ffffff;
+    --btn-texte: var(--basalte);
+    color: #f2f3f0;
   }
 
   .nav__inner {
     max-width: var(--page);
     margin-inline: auto;
     padding: 0 var(--gutter);
-    height: 68px;
+    height: var(--nav-h);
     display: flex;
     align-items: center;
     gap: clamp(1rem, 4vw, 3rem);
@@ -72,120 +70,92 @@ import { identity, nav } from '../data/site';
     text-decoration: none;
     display: grid;
     align-content: center;
-    gap: 0.28em;
+    gap: 0.3em;
     margin-right: auto;
     min-height: 44px;
   }
-  .mark__name {
-    font-variation-settings: 'wdth' 108;
-    font-weight: 560;
+  .mark__nom {
+    font-variation-settings: 'wdth' 116;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.05em;
     font-size: 0.8125rem;
     line-height: 1;
   }
   .mark__role {
-    font-variation-settings: 'wdth' 112;
-    font-size: 0.625rem;
-    letter-spacing: 0.09em;
+    font-family: 'Azeret Mono', monospace;
+    font-size: 0.5625rem;
+    letter-spacing: 0.11em;
     line-height: 1;
-    color: var(--fg-muted);
+    color: var(--texte-tenu);
     text-transform: uppercase;
   }
-  @media (max-width: 26rem) {
-    .mark__role { display: none; }
-  }
+  @media (max-width: 26rem) { .mark__role { display: none; } }
 
-  .nav__links {
-    display: none;
-    gap: clamp(1rem, 2.4vw, 2.2rem);
-    white-space: nowrap;
-  }
-  .nav__links a {
+  .nav__liens { display: none; gap: clamp(1rem, 2.2vw, 2rem); white-space: nowrap; }
+  .nav__liens a {
     text-decoration: none;
-    font-size: 0.875rem;
-    font-variation-settings: 'wdth' 102;
-    font-weight: 480;
-    color: var(--fg-muted);
+    font-family: 'Azeret Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+    color: var(--texte-tenu);
     transition: color var(--t-ui) var(--ease-out);
-    padding-block: 0.4em;
+    padding-block: 0.5em;
   }
-  @media (hover: hover) and (pointer: fine) {
-    .nav__links a:hover { color: var(--fg); }
-  }
-  .nav__links a[aria-current='true'] { color: var(--fg); }
+  @media (hover: hover) and (pointer: fine) { .nav__liens a:hover { color: var(--texte); } }
+  .nav__liens a[aria-current='true'] { color: var(--accent); }
 
   .nav__actions { display: flex; align-items: center; gap: 0.75rem; }
-  .nav__cta {
-    display: none;
-    padding: 0.7em 1.15em;
-    font-size: 0.8125rem;
-  }
+  .nav__cta { display: none; padding: 0.75em 1.15em; font-size: 0.75rem; }
 
   .burger {
-    appearance: none;
-    background: none;
-    border: 1px solid var(--rule-strong);
-    color: inherit;
-    width: 42px;
-    height: 38px;
-    display: grid;
-    place-content: center;
-    gap: 5px;
-    cursor: pointer;
-    padding: 0;
+    appearance: none; background: none;
+    border: 1px solid var(--filet-franc);
+    color: inherit; width: 42px; height: 38px;
+    display: grid; place-content: center; gap: 5px; cursor: pointer; padding: 0;
   }
   .burger span {
-    display: block;
-    width: 17px;
-    height: 1px;
-    background: currentColor;
-    transition: transform var(--t-ui) var(--ease-out), opacity var(--t-ui) var(--ease-out);
+    display: block; width: 17px; height: 1px; background: currentColor;
+    transition: transform var(--t-ui) var(--ease-out);
   }
   .burger[aria-expanded='true'] span:first-child { transform: translateY(3px) rotate(45deg); }
   .burger[aria-expanded='true'] span:last-child { transform: translateY(-3px) rotate(-45deg); }
 
-  @media (min-width: 60rem) {
-    .nav__links { display: flex; }
+  @media (min-width: 62rem) {
+    .nav__liens { display: flex; }
     .nav__cta { display: inline-flex; }
     .burger { display: none; }
   }
 
-  /* ---- Panneau mobile ---- */
   .menu {
-    position: fixed;
-    inset: 0;
-    z-index: 45;
-    background: var(--bg);
+    position: fixed; inset: 0; z-index: 45;
+    background: var(--harmattan);
     padding: 88px var(--gutter) var(--gutter);
-    display: grid;
-    align-content: start;
-    opacity: 0;
-    transform: translate3d(0, -8px, 0);
+    display: grid; align-content: start;
+    opacity: 0; transform: translate3d(0, -8px, 0);
     transition: opacity 220ms var(--ease-out), transform 220ms var(--ease-out);
   }
-  .menu[data-open] { opacity: 1; transform: none; }
-
-  .menu__list { display: grid; }
-  .menu__list a {
+  .menu[data-ouvert] { opacity: 1; transform: none; }
+  .menu__liste { display: grid; }
+  .menu__liste a {
     text-decoration: none;
-    font-variation-settings: 'wdth' 94;
-    font-weight: 540;
-    letter-spacing: -0.02em;
-    font-size: clamp(2rem, 11vw, 3rem);
-    line-height: 1.16;
-    padding-block: 0.3em;
-    border-bottom: 1px solid var(--rule);
-    opacity: 0;
-    transform: translate3d(0, 12px, 0);
+    font-variation-settings: 'wdth' 112;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    font-size: clamp(1.6rem, 8.5vw, 2.4rem);
+    line-height: 1.2;
+    padding-block: 0.35em;
+    border-bottom: 1px solid var(--filet);
+    opacity: 0; transform: translate3d(0, 12px, 0);
     transition:
-      opacity 320ms var(--ease-out) calc(var(--i) * 40ms + 60ms),
-      transform 320ms var(--ease-out) calc(var(--i) * 40ms + 60ms);
+      opacity 300ms var(--ease-out) calc(var(--i) * 45ms + 60ms),
+      transform 300ms var(--ease-out) calc(var(--i) * 45ms + 60ms);
   }
-  .menu[data-open] .menu__list a { opacity: 1; transform: none; }
+  .menu[data-ouvert] .menu__liste a { opacity: 1; transform: none; }
 
   @media (prefers-reduced-motion: reduce) {
-    .menu, .menu__list a { transition-duration: 140ms; transform: none; }
+    .nav, .menu, .menu__liste a { transition-duration: 120ms; transform: none; }
   }
 </style>
 
@@ -194,85 +164,77 @@ import { identity, nav } from '../data/site';
   const menu = document.getElementById('menu')!;
   const burger = document.querySelector<HTMLButtonElement>('.burger')!;
 
-  /* 1. Le bandeau ne se dessine qu'une fois le haut de page dépassé.
-        Une sentinelle observée vaut mieux qu'un écouteur de scroll. */
-  const sentinel = document.createElement('div');
-  sentinel.setAttribute('aria-hidden', 'true');
-  sentinel.style.cssText = 'position:absolute;top:0;height:1px;width:1px;';
-  document.body.prepend(sentinel);
-  new IntersectionObserver(
-    ([e]) => nav.toggleAttribute('data-stuck', !e.isIntersecting),
-    { threshold: 0 },
-  ).observe(sentinel);
+  // 1. La barre ne se dessine qu'une fois le haut de page dépassé.
+  const temoin = document.createElement('div');
+  temoin.setAttribute('aria-hidden', 'true');
+  temoin.style.cssText = 'position:absolute;top:0;height:1px;width:1px;';
+  document.body.prepend(temoin);
+  new IntersectionObserver(([e]) => nav.toggleAttribute('data-pose', !e.isIntersecting))
+    .observe(temoin);
 
-  /* 2. Le bandeau prend le fond de la bande qui passe dessous, pour
-        rester lisible au moment où la page bascule de la nuit au jour. */
-  const bands = document.querySelectorAll<HTMLElement>('.band[data-ground]');
-  const groundObserver = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          nav.dataset.ground = entry.target.getAttribute('data-ground') ?? 'night';
-        }
-      }
-    },
-    { rootMargin: '-69px 0px -99% 0px' },
-  );
-  bands.forEach((b) => groundObserver.observe(b));
+  // 2. La barre s'inverse quand la lanterne passe dessous.
+  const ascension = document.getElementById('ascension');
+  if (ascension) {
+    let derriere = false;
+    const relire = () => {
+      nav.toggleAttribute('data-nuit', derriere && ascension.dataset.salle === 'lanterne');
+    };
+    new IntersectionObserver(
+      ([e]) => { derriere = e.isIntersecting; relire(); },
+      { rootMargin: '-68px 0px -99% 0px' },
+    ).observe(ascension);
+    new MutationObserver(relire).observe(ascension, {
+      attributes: true, attributeFilter: ['data-salle'],
+    });
+  }
 
-  /* 3. Section courante dans la navigation. */
-  const links = [...document.querySelectorAll<HTMLAnchorElement>('.nav__links a')];
-  const targets = links
+  // 3. Section courante.
+  const liens = [...document.querySelectorAll<HTMLAnchorElement>('.nav__liens a')];
+  const cibles = liens
     .map((a) => document.querySelector(a.getAttribute('href')!))
     .filter(Boolean) as Element[];
-  const currentObserver = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        const id = `#${entry.target.id}`;
-        links.forEach((a) => a.setAttribute('aria-current', String(a.getAttribute('href') === id)));
+  const obsCourant = new IntersectionObserver(
+    (entrees) => {
+      for (const e of entrees) {
+        if (!e.isIntersecting) continue;
+        const id = `#${e.target.id}`;
+        liens.forEach((a) => a.setAttribute('aria-current', String(a.getAttribute('href') === id)));
       }
     },
     { rootMargin: '-30% 0px -60% 0px' },
   );
-  targets.forEach((t) => currentObserver.observe(t));
+  cibles.forEach((c) => obsCourant.observe(c));
 
-  /* 4. Panneau mobile. Il sort par où il est entré. */
-  let lastFocus: HTMLElement | null = null;
-
-  const open = () => {
-    lastFocus = document.activeElement as HTMLElement;
+  // 4. Panneau mobile. Il sort par où il est entré.
+  let dernierFocus: HTMLElement | null = null;
+  const ouvrir = () => {
+    dernierFocus = document.activeElement as HTMLElement;
     menu.hidden = false;
-    requestAnimationFrame(() => menu.setAttribute('data-open', ''));
+    requestAnimationFrame(() => menu.setAttribute('data-ouvert', ''));
     burger.setAttribute('aria-expanded', 'true');
     burger.setAttribute('aria-label', 'Fermer le menu');
     document.body.style.overflow = 'hidden';
     menu.querySelector('a')?.focus();
   };
-
-  const close = () => {
-    menu.removeAttribute('data-open');
+  const fermer = () => {
+    menu.removeAttribute('data-ouvert');
     burger.setAttribute('aria-expanded', 'false');
     burger.setAttribute('aria-label', 'Ouvrir le menu');
     document.body.style.overflow = '';
-    const done = () => { menu.hidden = true; };
-    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) done();
-    else menu.addEventListener('transitionend', done, { once: true });
-    lastFocus?.focus();
+    const fini = () => { menu.hidden = true; };
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) fini();
+    else menu.addEventListener('transitionend', fini, { once: true });
+    dernierFocus?.focus();
   };
-
   burger.addEventListener('click', () =>
-    burger.getAttribute('aria-expanded') === 'true' ? close() : open(),
-  );
+    burger.getAttribute('aria-expanded') === 'true' ? fermer() : ouvrir());
   menu.addEventListener('click', (e) => {
-    if ((e.target as HTMLElement).closest('a')) close();
+    if ((e.target as HTMLElement).closest('a')) fermer();
   });
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && burger.getAttribute('aria-expanded') === 'true') close();
+    if (e.key === 'Escape' && burger.getAttribute('aria-expanded') === 'true') fermer();
   });
-  const mq = matchMedia('(min-width: 60rem)');
-  mq.addEventListener('change', (e) => {
-    if (e.matches && burger.getAttribute('aria-expanded') === 'true') close();
+  matchMedia('(min-width: 62rem)').addEventListener('change', (e) => {
+    if (e.matches && burger.getAttribute('aria-expanded') === 'true') fermer();
   });
 </script>

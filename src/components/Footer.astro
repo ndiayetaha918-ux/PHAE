@@ -3,7 +3,7 @@ import { identity, contact } from '../data/site';
 const year = new Date().getFullYear();
 ---
 
-<footer class="band foot" data-ground="day">
+<footer class="lieu foot">
   <div class="wrap foot__inner">
     <div class="foot__mark">
       <span class="foot__name">Phare des Mamelles</span>
@@ -24,12 +24,16 @@ const year = new Date().getFullYear();
 
 <style>
   .foot {
-    background: var(--ink-900);
-    color: var(--chalk-50);
-    --fg: var(--chalk-50);
-    --fg-muted: #9aa1a8;
-    --rule: rgb(255 255 255 / 0.14);
+    background: var(--basalte);
+    /* Le pied de page porte ses propres jetons: fond sombre, donc
+       texte clair. */
+    --texte: #f2f3f0;
+    --texte-doux: #a6afac;
+    --texte-tenu: #8a938f;
+    --filet: rgb(255 255 255 / 0.16);
+    color: var(--texte);
     padding-block: clamp(3rem, 8vw, 5rem);
+    color-scheme: dark;
   }
 
   .foot__inner {
@@ -57,25 +61,25 @@ const year = new Date().getFullYear();
     text-transform: uppercase;
     letter-spacing: 0.09em;
     font-size: 0.6875rem;
-    color: var(--fg-muted);
+    color: var(--texte-doux);
   }
 
   .foot__meta {
     display: grid;
     gap: 0.35rem;
     font-size: 0.9375rem;
-    color: var(--fg-muted);
+    color: var(--texte-doux);
   }
   @media (min-width: 54rem) {
     .foot__meta { text-align: right; }
   }
-  .foot__meta a { color: var(--fg); }
+  .foot__meta a { color: var(--texte); }
 
   .foot__legal {
     margin: 0;
     padding-top: 1.75rem;
-    border-top: 1px solid var(--rule);
+    border-top: 1px solid var(--filet);
     font-size: 0.8125rem;
-    color: var(--fg-muted);
+    color: var(--texte-doux);
   }
 </style>

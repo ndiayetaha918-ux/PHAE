@@ -45,8 +45,7 @@ export const openingHours = [
 ];
 
 export const nav = [
-  { href: '#le-feu', label: 'Le feu' },
-  { href: '#la-colline', label: 'La colline' },
+  { href: '#ascension', label: 'L\u2019ascension' },
   { href: '#le-musee', label: 'Le musée' },
   { href: '#rendez-vous', label: 'Rendez-vous' },
   { href: '#venir', label: 'Venir' },

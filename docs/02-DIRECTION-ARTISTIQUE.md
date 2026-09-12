@@ -1,130 +1,122 @@
 # Phase 2 : Direction visuelle et structure
 
-## Lecture du brief
+Version 2. La première direction a été abandonnée: elle était sombre,
+lisse et interchangeable. Ce document remplace la précédente.
 
-Site institutionnel pour un monument réel qui est à la fois un musée
-national et un lieu de sortie. Public: visiteurs de Dakar, touristes,
-institutions, organisateurs d'événements. Langage: patrimoine et
-navigation, pas "luxe africain". Le socle technique est Astro avec du CSS
-écrit à la main, parce que le contenu est presque entièrement statique et
-que la priorité est la performance mobile.
+## D'où vient la palette
 
-## Le principe
+Elle ne vient pas d'une humeur "premium". Elle vient de ce dont ce musée
+est le musée: **le balisage**.
 
-**L'identité ne vient pas d'un décor ajouté. Elle vient de l'objet.**
-
-Le phare possède déjà quatre choses qu'aucun autre lieu de Dakar ne
-possède, et ce sont elles qui font le système:
-
-1. **Une cadence.** L'optique fait un tour en cinq secondes. C'est le
-   tempo ambiant du site. Le balayage de la page tourne exactement en
-   cinq secondes, pas en "trois secondes parce que c'est plus dynamique".
-2. **Une géométrie.** La lentille de Fresnel est une suite d'anneaux à
-   échelons. Elle est dessinée à partir de sa structure réelle: rayon en
-   racine carrée pour que chaque couronne traite une part égale du flux,
-   couronne de prismes catadioptriques, montants de lanterne. C'est la
-   signature visuelle, et elle est vraie.
-3. **Une portée.** Cinquante-trois kilomètres. Cent vingt-six mètres.
-   Seize mètres de tour. Mille huit cent soixante-quatre. Des nombres
-   réels, documentés, jamais inventés pour faire technique.
-4. **Deux vies.** La nuit, le feu. Le jour, le musée et le panorama.
-
-## Ce qui a été écarté
-
-- Photo frontale du phare avec grand titre et bouton. C'est le cliché
-  que le brief demandait d'éviter, et c'est aussi ce que fait le site actuel.
-- Motifs ajoutés pour "faire sénégalais". Le phare est un ouvrage
-  d'ingénierie maritime du XIXe siècle. Lui coller des motifs serait
-  un décor de façade.
-- Palette beige et laiton. C'est le réflexe par défaut des briefs
-  patrimoniaux et il rend toutes les marques interchangeables.
-- Glassmorphism, dégradés décoratifs, cartes partout, parallax.
-
-## Couleur
-
-Il n'y a **pas de couleur d'accent**. Il y a de la lumière.
+Le Sénégal est en région A de l'AISM. Dans ce système, le rouge marque le
+bâbord, le vert le tribord, et le feu est blanc. Ce sont des couleurs de
+fonction, lisibles de loin. Le musée national des Phares et Balises a donc
+déjà une identité chromatique codifiée, et personne d'autre ne peut la
+revendiquer.
 
 | Rôle | Valeur | Origine |
 |---|---|---|
-| Sol nuit | `#0a0c0f` vers `#1e242c` | Le basalte de la colline. Jamais de noir pur. |
-| Sol jour | `#e9eae6` | Maçonnerie chaulée sous la lumière atlantique. Froid, pas crème. |
-| Encre | `#14171a` | |
-| Lumière | `rgb(255 226 176)` | Le feu. Utilisée en luminance seulement: halos, balayage, filets. Jamais en aplat de bouton. |
+| Fond | `#ecedea` | Le ciel de Dakar chargé d'harmattan. Blanc laiteux, pas crème. |
+| Accent | `#d5372a` | Rouge bâbord. Il domine. |
+| Rare | `#157a52` | Vert tribord. Contexte technique seulement, jamais à poids égal à côté du rouge. |
+| Sombre | `#1c2124` | Le basalte de la colline et du mur de soutènement à pierres rondes. |
+| Pierre | `#d6cdba` | Relevé sur la photographie de référence. |
+| Feu | `rgb(255 246 224)` | La lampe. |
 
-Les boutons ne sont pas colorés: ils sont en contraste de valeur, chalk
-sur basalte la nuit, encre sur chalk le jour. Cela passe le niveau AA
-sans effort et évite la couleur décorative.
+Le noir n'apparaît **qu'une seule fois**, dans la lanterne, la nuit,
+parce que c'est le seul endroit où il a une fonction.
 
-**Une seule bascule de thème sur la page**, entre la moitié nuit et la
-moitié jour, et elle porte du contenu (la date de fondation) plutôt qu'un
-effet. Aucune section n'inverse le thème ailleurs.
+## Règle de matière
+
+**Aucun flou nulle part.** Pas d'ombre douce, pas de dégradé décoratif,
+pas de verre dépoli, pas d'angle arrondi, pas de bouton pilule, pas de
+carte. Des aplats, des filets, des bords francs. Une façade sous ce
+soleil ne produit pas de dégradés.
 
 ## Typographie
 
-Deux familles, une règle claire.
+Deux familles, deux registres, et le contraste porte sur la **largeur**
+autant que sur la graisse.
 
-- **Archivo** (variable, axe de largeur). C'est la voix de l'institution.
-  La largeur porte le contraste: `wdth 78 à 93` pour les titres, qui
-  deviennent étroits et verticaux comme la tour, `wdth 110 à 118` pour
-  les petites étiquettes, qui s'élargissent et se posent.
-- **Newsreader italique**. C'est **la voix de l'archive**, et rien
-  d'autre. Elle n'apparaît que sur les mentions de pièces d'archives.
-  Elle n'est jamais utilisée pour de l'interface.
+- **Archivo** variable. La ligne monumentale est en `wdth 121` graisse
+  700, capitales. Une grotesque large se lit comme de la signalisation et
+  de l'institution. C'est l'inverse du réflexe "titre condensé géant".
+  La ligne de réponse est en `wdth 70` graisse 300, bas de casse. Même
+  famille, largeur et graisse opposées: l'emphase ne change jamais de
+  famille.
+- **Azeret Mono** pour le registre technique: la notation des cartes
+  marines, les mesures, la navigation. C'est la langue des Phares et
+  Balises.
 
-Aucun mot en serif injecté dans un titre en sans. L'emphase se fait par
-la graisse et la largeur de la même famille.
+La caractéristique du feu, `Fl W 5s`, est portée dans la composition
+comme sur une carte marine. Elle veut dire: éclats, blanc, période de
+cinq secondes. C'est la signature du phare, et elle n'appartient qu'à lui.
 
-Les chiffres réels sont en chasse tabulaire, pour que les colonnes de
-valeurs s'alignent.
+## Le parcours : une géographie, pas une liste
 
-## Forme
+Le bâtiment a des salles réelles. Le site les traverse dans l'ordre où on
+les traverse sur place.
 
-Tout ce qui est rectiligne est à angle vif, rayon zéro. Le seul élément
-rond de la page est l'optique. La règle tient sur une ligne et ne souffre
-pas d'exception.
+| Salle | Ce qu'on y trouve |
+|---|---|
+| L'arrivée | Le bâtiment, sa caractéristique de feu |
+| La salle des machines | Rez-de-chaussée: groupe électrogène, batteries, et l'exposition |
+| La salle de veille | Premier étage: les gardiens de quart |
+| L'escalier | La vis de pierre qui mène à la lanterne |
+| **La lanterne** | Fresnel de second ordre, cuve de mercure. **Il fait nuit.** |
+| La galerie | Le tour complet, la presqu'île |
 
-## Parcours
+On ne descend pas une pile de sections: on monte un escalier.
 
-Chaque section répond à la curiosité créée par la précédente.
+## Le modèle 3D
 
-| Section | Ce qu'elle donne | La question qu'elle ouvre |
-|---|---|---|
-| Ouverture | Cinq secondes par tour | Comment ? |
-| Le feu | Fresnel, mercure, 53 km | 53 km depuis où ? |
-| 1864 | La fondation. Bascule nuit vers jour | |
-| La colline | 126 m de basalte, la tour n'en fait que 16 | Et on voit quoi ? |
-| Le panorama | La presqu'île entière | Et à l'intérieur ? |
-| Le musée | Les archives de 1862, le parcours | Je peux venir ? |
-| Rendez-vous | La programmation | |
-| Venir | Horaires, tarifs, accès | |
+**Pourquoi le phare est en 3D ici:** parce que le site est une ascension
+et qu'il faut savoir où l'on est dans un bâtiment qu'on ne voit pas de
+l'intérieur. Le modèle reste à l'écran pendant toute la montée et la
+caméra s'élève avec le lecteur. Il n'est pas là pour être fait tourner.
+
+Fidélité: la géométrie est relevée sur la photographie de référence
+fournie, rapportée au diamètre du fût. Tour cylindrique fuselée sur un
+socle carré et un corps de logis de deux étages, corbeau évasé, galerie à
+garde-corps, lanterne vitrée à montants avec l'optique à échelons
+visible, dôme à patine, épi de faîtage, mur de soutènement en basalte.
+
+Performance:
+
+- La géométrie est **produite par le code**. Rien à télécharger: pas de
+  fichier de modèle, pas de textures.
+- `three` n'est chargé qu'à l'approche de la section, jamais au
+  chargement de la page.
+- Une **affiche fixe** (28 ko en WebP) est peinte d'abord. Elle sert de
+  premier rendu, de repli sans WebGL, et de repli si l'appareil rame.
+- Deux niveaux de détail: moins de segments, moins de balustres, pas
+  d'ombres portées et résolution plafonnée sur mobile.
+- **Repli automatique sous dix-huit images par seconde**: la scène rend
+  la main à l'affiche plutôt que d'imposer une animation qui saccade.
+- La boucle de rendu s'arrête dès que la scène sort de l'écran.
+- L'interpolation est en temps réel, pas par image: le mouvement dure la
+  même chose à 30 ou à 120 images par seconde.
+
+Poids initial de la page, hors 3D: **environ 152 ko** (HTML et CSS
+compressés, deux polices, l'affiche).
 
 ## Mouvement
 
 Trois mouvements, pas vingt.
 
-1. **Le balayage.** Cinq secondes par tour, la période réelle. Animation
-   CSS, donc elle tourne hors du fil principal et ne saute pas pendant
-   le chargement.
-2. **L'entrée de l'ouverture.** Le texte monte de 0,5 em, décalages de
-   70 ms, courbe `cubic-bezier(0.23, 1, 0.32, 1)`.
-3. **La révélation au défilement.** Un seul mécanisme pour tout le site,
-   un IntersectionObserver qui cesse d'observer après le passage.
-   Opacité et translation uniquement, donc tout reste sur le compositeur.
+1. **L'éclat.** Cinq secondes, la période réelle de l'optique.
+2. **La montée de la caméra** quand on change de salle.
+3. **La révélation au défilement**, un seul mécanisme pour tout le site.
 
 Rien n'est attaché à un écouteur de défilement. Aucun parallax.
-`prefers-reduced-motion` retire le mouvement mais garde l'idée: le
-faisceau reste allumé, il cesse de tourner.
+`prefers-reduced-motion` retire le mouvement mais garde l'idée.
 
-## Contraintes vérifiées
+## Contrôles automatisés
 
-Un script d'audit passe le site au crible à 1440 px et à 390 px, et
-mesure sur le rendu réel, pas sur les intentions:
+Un script mesure sur le rendu réel à 1440 px et à 390 px: contraste de
+chaque nœud de texte contre son fond peint, taille des cibles tactiles,
+ordre des niveaux de titre, noms accessibles, débordement horizontal,
+tenue de l'ouverture dans le premier écran, absence de cadratin et de
+formules marketing génériques.
 
-- contraste de chaque nœud de texte visible contre son fond peint,
-- taille des cibles tactiles,
-- ordre des niveaux de titre,
-- noms accessibles des liens et boutons,
-- débordement horizontal,
-- tenue de l'ouverture dans le premier écran.
-
-État actuel: 0 échec sur les deux tailles.
+État: **0 échec** sur les deux tailles.

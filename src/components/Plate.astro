@@ -29,7 +29,7 @@ const height = Math.round(plate.width / plate.ratio);
     />
   ) : (
     <div class="plate__pending" role="img" aria-label={plate.alt}>
-      <span class="label">Visuel à fournir</span>
+      <span class="tech tech--fort">Visuel à fournir</span>
       <span class="archive plate__note">{plate.alt}</span>
       <span class="plate__spec">{plate.width} px de large</span>
     </div>
@@ -40,7 +40,7 @@ const height = Math.round(plate.width / plate.ratio);
   .plate {
     margin: 0;
     aspect-ratio: var(--ratio);
-    background: var(--bg-raised);
+    background: var(--fond-creux);
     overflow: hidden;
     position: relative;
   }
@@ -59,13 +59,13 @@ const height = Math.round(plate.width / plate.ratio);
     gap: 0.9rem;
     padding: clamp(1.25rem, 4vw, 2.5rem);
     text-align: center;
-    border: 1px solid var(--rule);
+    border: 1px solid var(--filet);
     background:
-      radial-gradient(90% 70% at 50% 40%, color-mix(in oklab, var(--fg) 5%, transparent), transparent 70%);
+      radial-gradient(90% 70% at 50% 40%, color-mix(in oklab, var(--texte) 5%, transparent), transparent 70%);
   }
   .plate__note {
     font-size: clamp(0.95rem, 0.85rem + 0.5vw, 1.2rem);
-    color: var(--fg-muted);
+    color: var(--texte-doux);
     max-width: 34ch;
   }
   .plate__spec {
@@ -73,6 +73,6 @@ const height = Math.round(plate.width / plate.ratio);
     font-variation-settings: 'wdth' 112;
     font-size: 0.75rem;
     letter-spacing: 0.1em;
-    color: var(--fg-faint);
+    color: var(--texte-tenu);
   }
 </style>

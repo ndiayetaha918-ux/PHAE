@@ -1,0 +1,247 @@
+---
+/* L'ascension.
+
+   C'est la géographie du site. Le bâtiment a des salles réelles et on
+   les traverse dans l'ordre où on les traverse sur place: la salle des
+   machines, la salle de veille, l'escalier, la lanterne, la galerie.
+
+   Le modèle reste à l'écran pendant toute la montée et la caméra
+   s'élève avec le lecteur. C'est la raison d'être de la 3D ici: savoir
+   où l'on est dans un bâtiment qu'on ne voit pas de l'intérieur.
+
+   La lanterne est le seul endroit sombre du site, parce que c'est la
+   nuit que le feu sert. */
+
+const salles = [
+  {
+    cle: 'socle',
+    nom: 'La salle des machines',
+    tech: 'Rez-de-chaussée',
+    dit: 'Au rez-de-chaussée, le groupe électrogène et les batteries de secours. C’est aussi là que l’exposition est installée, autour des archives du projet.',
+  },
+  {
+    cle: 'veille',
+    nom: 'La salle de veille',
+    tech: 'Premier étage',
+    dit: 'Les gardiens de quart y passaient la nuit. Le phare a été tenu par des hommes avant de l’être par une horloge.',
+  },
+  {
+    cle: 'escalier',
+    nom: 'L’escalier',
+    tech: 'Vis de pierre',
+    dit: 'Un escalier en colimaçon dessert la lanterne. C’est la seule façon de monter, et c’est la raison pour laquelle la visite est une ascension.',
+  },
+  {
+    cle: 'lanterne',
+    nom: 'La lanterne',
+    tech: 'Fl W 5s',
+    dit: 'Une lentille de Fresnel de second ordre, flottant sur une cuve de mercure. Un tour toutes les cinq secondes, un éclat blanc, cinquante-trois kilomètres de portée.',
+  },
+  {
+    cle: 'galerie',
+    nom: 'La galerie',
+    tech: 'Tour complet',
+    dit: 'La plateforme fait le tour de la lanterne. De là, la presqu’île du Cap-Vert d’une extrémité à l’autre, et l’Atlantique ouvert.',
+  },
+];
+---
+
+<section class="lieu ascension" id="ascension" data-salle="socle">
+  <div class="wrap ascension__grille">
+    <div class="ascension__scene">
+      <div class="scene">
+        <img
+          class="scene__affiche"
+          src="/media/phare-poster.png"
+          alt="Le Phare des Mamelles: tour cylindrique, galerie, lanterne vitrée et dôme."
+          width="1100"
+          height="1380"
+          loading="lazy"
+          decoding="async"
+        />
+        <canvas
+          class="scene__toile"
+          tabindex="0"
+          role="img"
+          aria-label="Modèle du Phare des Mamelles. Utilisez les flèches gauche et droite pour le faire pivoter."
+          hidden
+        ></canvas>
+        <p class="tech scene__aide" hidden>Faites pivoter</p>
+      </div>
+    </div>
+
+    <ol class="salles">
+      {salles.map((s) => (
+        <li class="salle" data-repere={s.cle}>
+          <p class="tech salle__tech">{s.tech}</p>
+          <h2 class="titre salle__nom">{s.nom}</h2>
+          <p class="salle__dit">{s.dit}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .ascension {
+    transition: background-color 900ms var(--ease-in-out), color 900ms var(--ease-in-out);
+  }
+
+  .ascension__grille {
+    display: grid;
+    gap: clamp(1rem, 4vw, 4rem);
+    align-items: start;
+  }
+
+  .ascension__scene { position: sticky; z-index: 1; }
+
+  .scene {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    display: grid;
+    place-items: center;
+  }
+  .scene__affiche,
+  .scene__toile {
+    grid-area: 1 / 1;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .scene__toile { touch-action: pan-y; cursor: grab; outline-offset: 6px; }
+  .scene__toile:active { cursor: grabbing; }
+  /* Une fois la scène prête, l'affiche s'efface sous le modèle. */
+  .scene__affiche { transition: opacity 500ms var(--ease-out); }
+  .scene[data-vivant] .scene__affiche { opacity: 0; }
+
+  .scene__aide {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .salles { list-style: none; margin: 0; padding: 0; }
+
+  .salle {
+    padding-block: clamp(3rem, 16vh, 9rem);
+    max-width: 42ch;
+  }
+  .salle__tech { margin-bottom: 0.9rem; }
+  .salle__nom { margin-bottom: 1rem; }
+  .salle__dit {
+    margin: 0;
+    color: var(--texte-doux);
+    font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.2rem);
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  /* Le moment: on entre dans la lanterne, il fait nuit. */
+  .ascension[data-salle='lanterne'] {
+    --fond: var(--basalte);
+    --texte: #f2f3f0;
+    --texte-doux: #a6afac;
+    --texte-tenu: #8a938f;
+    --filet: #ffffff26;
+    --filet-franc: #ffffff;
+    --accent: rgb(var(--feu));
+    background: var(--basalte);
+    color: #f2f3f0;
+    color-scheme: dark;
+  }
+
+  @media (min-width: 62rem) {
+    .ascension__grille { grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr); }
+    .ascension__scene { top: calc(var(--nav-h) + 2vh); height: min(76vh, 40rem); }
+    .scene { height: 100%; aspect-ratio: auto; width: 100%; }
+    .salle { padding-block: clamp(6rem, 26vh, 14rem); }
+    .salle:first-child { padding-top: clamp(4rem, 14vh, 8rem); }
+  }
+
+  @media (max-width: 61.99rem) {
+    .ascension__scene {
+      top: var(--nav-h);
+      padding-block: 1rem;
+      background: var(--fond);
+      transition: background-color 900ms var(--ease-in-out);
+    }
+    .scene { max-width: 15rem; margin-inline: auto; }
+    .salle { padding-block: clamp(2.5rem, 9vh, 4rem); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ascension, .ascension__scene { transition-duration: 1ms; }
+  }
+</style>
+
+<script>
+  const section = document.getElementById('ascension')!;
+  const scene = section.querySelector<HTMLElement>('.scene')!;
+  const toile = section.querySelector<HTMLCanvasElement>('.scene__toile')!;
+  const aide = section.querySelector<HTMLElement>('.scene__aide')!;
+  const salles = [...section.querySelectorAll<HTMLElement>('.salle')];
+
+  let pilote: { allerA(r: string): void } | null = null;
+  let salleActive = 'socle';
+
+  /* La salle courante pilote à la fois le fond de la section et la
+     hauteur de la caméra. Un seul observateur pour les deux. */
+  const obsSalles = new IntersectionObserver(
+    (entrees) => {
+      for (const e of entrees) {
+        if (!e.isIntersecting) continue;
+        const r = e.target.getAttribute('data-repere');
+        if (!r || r === salleActive) continue;
+        salleActive = r;
+        section.dataset.salle = r;
+        pilote?.allerA(r);
+      }
+    },
+    { rootMargin: '-45% 0px -45% 0px' },
+  );
+  salles.forEach((s) => obsSalles.observe(s));
+
+  /* WebGL n'est chargé qu'à l'approche, et seulement s'il est
+     réellement disponible. Sinon l'affiche reste, et elle suffit. */
+  const supporte = () => {
+    try {
+      const c = document.createElement('canvas');
+      return !!(c.getContext('webgl2') || c.getContext('webgl'));
+    } catch { return false; }
+  };
+
+  let lance = false;
+  const obsScene = new IntersectionObserver(
+    async ([e]) => {
+      if (!e.isIntersecting || lance) return;
+      lance = true;
+      obsScene.disconnect();
+      if (!supporte() || navigator.hardwareConcurrency <= 2) return;
+      try {
+        const { monterScene } = await import('../three/scene.js');
+        toile.hidden = false;
+        pilote = await monterScene(toile, {
+          mobile: matchMedia('(max-width: 61.99rem)').matches,
+          onPret: () => {
+            scene.dataset.vivant = '';
+            aide.hidden = false;
+          },
+          // L'appareil ne suit pas: on revient à l'affiche.
+          onLent: () => {
+            delete scene.dataset.vivant;
+            toile.hidden = true;
+            aide.hidden = true;
+          },
+        });
+        pilote.allerA(salleActive);
+      } catch {
+        toile.hidden = true; // l'affiche reste en place
+      }
+    },
+    { rootMargin: '300px 0px' },
+  );
+  obsScene.observe(scene);
+</script>

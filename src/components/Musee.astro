@@ -3,12 +3,12 @@ import Plate from './Plate.astro';
 import { collection } from '../data/site';
 ---
 
-<section class="band section musee" id="le-musee" data-ground="day">
+<section class="lieu section musee" id="le-musee">
   <div class="wrap musee__grid">
     <div class="musee__aside">
       <div class="musee__sticky">
-        <h2 class="title reveal">Le premier musée national<br />des Phares et Balises.</h2>
-        <p class="prose musee__lede reveal" style="--reveal-delay:80ms">
+        <h2 class="titre reveal">Le premier musée national<br />des Phares et Balises.</h2>
+        <p class="texte musee__lede reveal" style="--reveal-delay:80ms">
           L’exposition occupe le rez-de-chaussée de la tour. Elle part des
           pièces d’archives du projet et remonte jusqu’aux récits attachés à
           la presqu’île.
@@ -47,7 +47,7 @@ import { collection } from '../data/site';
   }
   @media (min-width: 60rem) {
     .musee__grid { grid-template-columns: 0.92fr 1fr; }
-    .musee__sticky { position: sticky; top: calc(68px + 3rem); }
+    .musee__sticky { position: sticky; top: calc(var(--nav-h) + 3rem); }
   }
 
   .musee__lede { margin-top: 1.5rem; max-width: 40ch; }
@@ -62,10 +62,10 @@ import { collection } from '../data/site';
 
   .entry {
     padding-block: clamp(1.75rem, 4vw, 2.5rem);
-    border-top: 1px solid var(--rule);
+    border-top: 1px solid var(--filet);
     counter-increment: entry;
   }
-  .entry:last-child { border-bottom: 1px solid var(--rule); }
+  .entry:last-child { border-bottom: 1px solid var(--filet); }
 
   .entry__title {
     font-variation-settings: 'wdth' 97;
@@ -85,7 +85,7 @@ import { collection } from '../data/site';
       font-variation-settings: 'wdth' 112;
       font-size: 0.75rem;
       letter-spacing: 0.08em;
-      color: var(--fg-faint);
+      color: var(--texte-tenu);
       line-height: 1.9;
       grid-row: 1 / span 3;
     }
@@ -94,12 +94,12 @@ import { collection } from '../data/site';
   .entry__year {
     margin: 0.5rem 0 0;
     font-size: 1.0625rem;
-    color: var(--fg-muted);
+    color: var(--texte-doux);
   }
 
   .entry__body {
     margin: 0.75rem 0 0;
-    color: var(--fg-muted);
+    color: var(--texte-doux);
     max-width: 56ch;
     text-wrap: pretty;
   }

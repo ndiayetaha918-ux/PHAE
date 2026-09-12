@@ -5,13 +5,13 @@ const mapHref =
   'https://www.google.com/maps/search/?api=1&query=Phare+des+Mamelles+Dakar';
 ---
 
-<section class="band section venir" id="venir" data-ground="day">
+<section class="lieu section venir" id="venir">
   <div class="wrap">
-    <h2 class="title venir__title reveal">Venir au phare.</h2>
+    <h2 class="titre venir__title reveal">Venir au phare.</h2>
 
     <div class="venir__grid">
       <div class="col reveal">
-        <h3 class="label">Le musée</h3>
+        <h3 class="tech tech--fort">Le musée</h3>
         <dl class="facts">
           <dt>Ouverture</dt>
           <dd>{museum.hours}</dd>
@@ -25,7 +25,7 @@ const mapHref =
       </div>
 
       <div class="col reveal" style="--reveal-delay:70ms">
-        <h3 class="label">Le lieu</h3>
+        <h3 class="tech tech--fort">Le lieu</h3>
         <dl class="hours">
           {openingHours.map((row) => (
             <div class="hours__row" data-closed={row.closed ? '' : undefined}>
@@ -37,7 +37,7 @@ const mapHref =
       </div>
 
       <div class="col reveal" style="--reveal-delay:140ms">
-        <h3 class="label">Adresse</h3>
+        <h3 class="tech tech--fort">Adresse</h3>
         <address class="address">
           {contact.address.map((line) => <span>{line}</span>)}
         </address>
@@ -54,14 +54,14 @@ const mapHref =
 </section>
 
 <style>
-  .venir { background: var(--chalk-100); }
+  .venir { background: var(--harmattan-creux); }
   .venir__title { max-width: 20ch; }
 
   .venir__grid {
     margin-top: clamp(2.5rem, 7vw, 4rem);
     display: grid;
     gap: clamp(2.5rem, 5vw, 3.5rem);
-    border-top: 1px solid var(--rule-strong);
+    border-top: 1px solid var(--filet-franc);
     padding-top: clamp(2rem, 4vw, 2.75rem);
   }
   @media (min-width: 54rem) {
@@ -69,7 +69,7 @@ const mapHref =
   }
 
   .col { min-width: 0; }
-  .col .label { margin-bottom: 1.5rem; color: var(--fg-faint); }
+  .col .label { margin-bottom: 1.5rem; color: var(--texte-tenu); }
 
   .facts, .hours { margin: 0; }
 
@@ -78,7 +78,7 @@ const mapHref =
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.11em;
-    color: var(--fg-faint);
+    color: var(--texte-tenu);
     margin-top: 1.25rem;
   }
   .facts dt:first-child { margin-top: 0; }
@@ -94,18 +94,18 @@ const mapHref =
     justify-content: space-between;
     gap: 1.5rem;
     padding-block: 0.7rem;
-    border-bottom: 1px solid var(--rule);
+    border-bottom: 1px solid var(--filet);
     font-size: 0.9375rem;
   }
-  .hours__row:first-child { border-top: 1px solid var(--rule); }
-  .hours__row dt { color: var(--fg-muted); }
+  .hours__row:first-child { border-top: 1px solid var(--filet); }
+  .hours__row dt { color: var(--texte-doux); }
   .hours__row dd {
     margin: 0;
     font-variant-numeric: tabular-nums;
     font-variation-settings: 'wdth' 98;
   }
   .hours__row[data-closed] dt,
-  .hours__row[data-closed] dd { color: var(--fg-faint); }
+  .hours__row[data-closed] dd { color: var(--texte-tenu); }
 
   .address {
     font-style: normal;
@@ -124,7 +124,7 @@ const mapHref =
     font-size: 1.0625rem;
   }
   .reach a {
-    text-decoration-color: var(--rule-strong);
+    text-decoration-color: var(--filet-franc);
     transition: text-decoration-color var(--t-ui) var(--ease-out);
   }
   @media (hover: hover) and (pointer: fine) {

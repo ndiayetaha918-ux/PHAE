@@ -1,119 +1,116 @@
 ---
-import Optic from './Optic.astro';
+/* L'arrivée. Le bâtiment, sa caractéristique de feu, et une phrase
+   qui dit ce qu'on vient y faire. Rien d'autre.
+
+   L'image est le rendu du modèle, servi en statique: la page ouvre
+   vite, et la 3D vivante n'est chargée qu'à la section d'ascension. */
 ---
 
-<section class="band hero" id="haut" data-ground="night">
-  <div class="hero__optic">
-    <Optic beam />
-  </div>
-
-  <div class="wrap hero__inner">
-    <div class="hero__text">
-      <h1 class="display hero__title">
-        <span>Cinq secondes</span>
-        <span>par tour,</span>
-        <span class="hero__since">depuis 1864.</span>
+<section class="lieu haut" id="haut">
+  <div class="wrap haut__grille">
+    <div class="haut__dire">
+      <h1 class="monument haut__titre">
+        <span class="reveal" style="--reveal-delay:60ms">On monte</span>
+        <span class="monument--contre reveal" style="--reveal-delay:170ms">jusqu’à la lampe.</span>
       </h1>
 
-      <p class="lede hero__lede">
-        Le plus ancien phare de Dakar abrite le premier musée national
-        des Phares et Balises.
+      <p class="dit haut__fait reveal" style="--reveal-delay:290ms">
+        Allumé en 1864 à cent vingt-six mètres au dessus de l’Atlantique.
+        Premier musée national des Phares et Balises.
       </p>
 
-      <a class="btn hero__cta" href="#le-musee">Visiter le musée</a>
+      <a class="btn haut__cta reveal" style="--reveal-delay:370ms" href="#ascension">
+        Commencer l’ascension
+      </a>
     </div>
+
+    <figure class="haut__phare">
+      <picture>
+        <source srcset="/media/phare-poster.webp" type="image/webp" />
+        <img
+          src="/media/phare-poster.png"
+          alt="Le Phare des Mamelles: tour cylindrique fuselée sur un corps de logis de deux étages, galerie à garde-corps, lanterne vitrée et dôme à patine."
+          width="1100"
+          height="1380"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </picture>
+      <figcaption class="tech haut__carac">
+        <span class="haut__trait"></span>Fl W 5s
+      </figcaption>
+    </figure>
   </div>
 </section>
 
 <style>
-  .hero {
-    min-height: 100svh;
+  .haut {
+    min-height: calc(100svh - var(--nav-h));
     display: grid;
     align-items: end;
-    overflow: hidden;
-    /* La nuit n'est pas plate: le ciel s'éclaircit vers l'horizon. */
-    background:
-      radial-gradient(120% 70% at 78% 38%, var(--basalt-800) 0%, transparent 62%),
-      linear-gradient(180deg, var(--basalt-900) 0%, var(--basalt-850) 78%, var(--basalt-800) 100%);
+    border-bottom: 1px solid var(--filet-franc);
   }
 
-  .hero__inner {
+  .haut__grille {
     width: 100%;
-    padding-bottom: clamp(3rem, 9vh, 6.5rem);
-    padding-top: 1rem;
-    position: relative;
-    z-index: 2;
-  }
-
-  .hero__text { max-width: 38rem; }
-
-  .hero__title span { display: block; }
-  .hero__since {
-    /* Le chiffre porte la date. Contraste de graisse et de largeur,
-       jamais de changement de famille. */
-    font-variation-settings: 'wdth' 78;
-    font-weight: 300;
-    color: var(--fg-muted);
-  }
-
-  .hero__lede {
-    margin-top: clamp(1.25rem, 3vh, 2rem);
-    color: var(--fg-muted);
-    max-width: 30ch;
-  }
-
-  .hero__cta { margin-top: clamp(1.75rem, 4vh, 2.75rem); }
-
-  /* L'optique. Hors-cadre à droite, coupée par le bord: on est trop
-     près pour la voir entière, ce qui est le cas dans la lanterne. */
-  .hero__optic {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
     display: grid;
-    place-items: center;
-  }
-  .hero__optic > :global(.optic) {
-    width: min(122vw, 118svh);
-    translate: 26% -22%;
-    opacity: 0.55;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: end;
+    padding-bottom: clamp(1.75rem, 5vh, 5rem);
+    padding-top: clamp(4.75rem, 10vh, 8rem);
   }
 
-  @media (min-width: 60rem) {
-    .hero { align-items: center; }
-    .hero__inner { padding-block: 0; }
-    .hero__optic > :global(.optic) {
-      width: min(64vw, 108svh);
-      translate: 32% 0;
-      opacity: 1;
+  .haut__titre span { display: block; }
+  .haut__titre .monument--contre { text-transform: none; }
+
+  .haut__fait { margin-top: clamp(1rem, 2.4vh, 2.25rem); color: var(--texte-doux); }
+  .haut__cta { margin-top: clamp(1.25rem, 3vh, 2.5rem); }
+
+  .haut__phare { position: relative; margin: 0; }
+  .haut__phare img { width: 100%; height: auto; }
+
+  /* Sur petit écran le repère passe à gauche de la lanterne: à droite
+     il viendrait buter sur le bord. */
+  .haut__carac {
+    position: absolute;
+    right: 62%;
+    top: 15%;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    color: var(--texte);
+    white-space: nowrap;
+  }
+  .haut__trait {
+    display: block;
+    width: clamp(0.9rem, 3vw, 2.4rem);
+    height: 1px;
+    background: var(--basalte);
+  }
+
+  @media (min-width: 62rem) {
+    .haut__grille {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.72fr);
+      gap: clamp(2rem, 5vw, 5rem);
+      align-items: center;
+      padding-top: clamp(5rem, 11vh, 7rem);
+    }
+    .haut__dire { padding-bottom: clamp(0rem, 3vh, 2rem); }
+    .haut__phare img { max-height: 74svh; width: auto; margin-left: auto; }
+    .haut__carac {
+      font-size: 0.75rem;
+      right: auto;
+      left: 62%;
+      flex-direction: row;
     }
   }
 
-  /* ---- Entrée ----
-     Une seule idée: le texte monte, l'optique s'allume derrière.
-     Décalages de 70 ms, rien de plus. */
-  @media (prefers-reduced-motion: no-preference) {
-    .hero__title span,
-    .hero__lede,
-    .hero__cta {
-      animation: rise 780ms var(--ease-out) both;
-    }
-    .hero__title span:nth-child(1) { animation-delay: 80ms; }
-    .hero__title span:nth-child(2) { animation-delay: 150ms; }
-    .hero__title span:nth-child(3) { animation-delay: 220ms; }
-    .hero__lede { animation-delay: 330ms; }
-    .hero__cta { animation-delay: 400ms; }
-
-    .hero__optic { animation: lamp 1400ms var(--ease-out) 120ms both; }
-  }
-
-  @keyframes rise {
-    from { opacity: 0; transform: translate3d(0, 0.5em, 0); }
-    to { opacity: 1; transform: none; }
-  }
-  @keyframes lamp {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  @media (max-width: 61.99rem) {
+    .haut__grille { align-content: space-between; gap: 1rem; }
+    .haut__phare { width: 54%; max-width: 15rem; margin-left: auto; margin-top: -0.5rem; }
+    .haut__dire { order: 2; }
   }
 </style>

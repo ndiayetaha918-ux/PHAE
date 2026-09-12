@@ -3,11 +3,11 @@ import Plate from './Plate.astro';
 import { programme, privateEvents } from '../data/site';
 ---
 
-<section class="band section soirs" id="rendez-vous" data-ground="day">
+<section class="lieu section soirs" id="rendez-vous">
   <div class="wrap">
     <div class="soirs__head">
-      <h2 class="title reveal">Musique live,<br />du mardi au dimanche.</h2>
-      <p class="prose soirs__lede reveal" style="--reveal-delay:80ms">
+      <h2 class="titre reveal">Musique live,<br />du mardi au dimanche.</h2>
+      <p class="texte soirs__lede reveal" style="--reveal-delay:80ms">
         Le phare reçoit une programmation chaque soir d’ouverture, sur la
         terrasse qui domine la presqu’île. Scène en semaine, formations live
         le week-end, brunch le dimanche.
@@ -28,11 +28,11 @@ import { programme, privateEvents } from '../data/site';
 
   <div class="wrap">
     <div class="soirs__private">
-      <h3 class="subtitle reveal">Le site se privatise.</h3>
+      <h3 class="sous-titre reveal">Le site se privatise.</h3>
       <ul class="tags reveal" style="--reveal-delay:70ms">
         {privateEvents.map((e) => <li>{e}</li>)}
       </ul>
-      <p class="prose soirs__note reveal" style="--reveal-delay:120ms">
+      <p class="texte soirs__note reveal" style="--reveal-delay:120ms">
         Les demandes de privatisation se font par téléphone ou par courriel,
         coordonnées plus bas.
       </p>
@@ -46,13 +46,13 @@ import { programme, privateEvents } from '../data/site';
 
   .schedule {
     margin: clamp(2.75rem, 7vw, 4.5rem) 0 0;
-    border-top: 1px solid var(--rule);
+    border-top: 1px solid var(--filet);
   }
   .schedule__row {
     display: grid;
     gap: 0.35rem 2.5rem;
     padding-block: clamp(1.25rem, 3vw, 1.75rem);
-    border-bottom: 1px solid var(--rule);
+    border-bottom: 1px solid var(--filet);
     align-items: baseline;
   }
   @media (min-width: 48rem) {
@@ -64,7 +64,7 @@ import { programme, privateEvents } from '../data/site';
     text-transform: uppercase;
     letter-spacing: 0.1em;
     font-size: 0.75rem;
-    color: var(--fg-muted);
+    color: var(--texte-doux);
   }
   .schedule__what {
     margin: 0;
@@ -87,7 +87,7 @@ import { programme, privateEvents } from '../data/site';
     gap: 0.5rem;
   }
   .tags li {
-    border: 1px solid var(--rule-strong);
+    border: 1px solid var(--filet-franc);
     padding: 0.55em 0.9em;
     font-size: 0.8125rem;
     font-variation-settings: 'wdth' 104;
