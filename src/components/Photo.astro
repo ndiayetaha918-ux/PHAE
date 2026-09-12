@@ -1,0 +1,46 @@
+---
+/* Photographie réelle du lieu.
+   Sert l'AVIF, puis le WebP, puis le format de repli. Les trois
+   fichiers portent le même nom de base dans public/media/. */
+
+interface Props {
+  /** Nom de base du fichier, sans extension. */
+  nom: string;
+  alt: string;
+  width: number;
+  height: number;
+  /** Extension de repli. */
+  repli?: 'jpg' | 'png';
+  sizes?: string;
+  eager?: boolean;
+  class?: string;
+}
+const {
+  nom, alt, width, height,
+  repli = 'jpg',
+  sizes = '100vw',
+  eager = false,
+  class: className = '',
+} = Astro.props;
+const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/media/${nom}`;
+---
+
+<picture class={className}>
+  <source srcset={`${base}.avif`} type="image/avif" sizes={sizes} />
+  <source srcset={`${base}.webp`} type="image/webp" sizes={sizes} />
+  <img
+    src={`${base}.${repli}`}
+    alt={alt}
+    width={width}
+    height={height}
+    sizes={sizes}
+    loading={eager ? 'eager' : 'lazy'}
+    decoding={eager ? 'sync' : 'async'}
+    fetchpriority={eager ? 'high' : 'auto'}
+  />
+</picture>
+
+<style>
+  picture { display: block; }
+  picture img { width: 100%; height: auto; }
+</style>

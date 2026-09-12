@@ -1,5 +1,6 @@
 node_modules/
 dist/
+# preview/ est volontairement suivi: c'est le build servi par githack.
 .astro/
 .DS_Store
 *.log

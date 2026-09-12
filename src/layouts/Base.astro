@@ -1,5 +1,6 @@
 ---
 import '../styles/app.css';
+import archivo from '../fonts/archivo.woff2?url';
 import { identity, contact, museum, facts, openingHours } from '../data/site';
 
 interface Props {
@@ -56,13 +57,7 @@ const schema = {
     <meta property="og:url" content={canonical} />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <link
-      rel="preload"
-      href="/fonts/archivo.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+    <link rel="preload" href={archivo} as="font" type="font/woff2" crossorigin />
 
     <script is:inline>
       /* Marque le document avant la première peinture: sans cela les
@@ -96,7 +91,15 @@ const schema = {
           },
           { rootMargin: '0px 0px -12% 0px', threshold: 0.05 },
         );
-        items.forEach((el) => io.observe(el));
+        /* La marge négative retarde volontairement la révélation du
+           contenu qui arrive par le bas. Mais au chargement elle
+           laisserait invisible ce qui se trouve déjà dans le bas de
+           l'écran: on révèle donc d'abord tout ce qui est visible. */
+        for (const el of items) {
+          const r = el.getBoundingClientRect();
+          if (r.top < innerHeight && r.bottom > 0) el.classList.add('is-in');
+          else io.observe(el);
+        }
       }
     </script>
   </body>

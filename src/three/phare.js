@@ -15,13 +15,17 @@
 
    La tour cylindrique documentée fait 16 m. */
 
+/* Teintes relevées sur les photographies de référence
+   (docs/references/phare). Correction: le bâtiment est BLANC, pas
+   crème. La première photographie était prise en lumière chaude de
+   fin de journée, ce qui l'avait fait lire beige. */
 export const TEINTES = {
-  pierre: 0xd6cdba,
-  pierreOmbre: 0xc0b6a1,
+  pierre: 0xedebe5,
+  pierreOmbre: 0xd3d0c8,
   basalte: 0x2b3235,
   metal: 0x23282a,
-  dome: 0x8a9086,
-  verre: 0xb9c2c0,
+  dome: 0xc6c6bd,
+  verre: 0x7d8a8c,
   feu: 0xfff6e0,
   terre: 0x9c6a4e,
 };
@@ -85,8 +89,8 @@ export function construirePhare(THREE, { qualite = 'haute' } = {}) {
     color: TEINTES.dome, roughness: 0.62, metalness: 0.35,
   });
   const matVerre = new THREE.MeshStandardMaterial({
-    color: TEINTES.verre, roughness: 0.12, metalness: 0.1,
-    transparent: true, opacity: 0.34,
+    color: TEINTES.verre, roughness: 0.1, metalness: 0.15,
+    transparent: true, opacity: 0.46,
   });
   const matFeu = new THREE.MeshStandardMaterial({
     color: TEINTES.feu, emissive: TEINTES.feu, emissiveIntensity: 1.6, roughness: 1,

@@ -1,41 +1,42 @@
 ---
+import Photo from './Photo.astro';
+
 /* L'arrivée. Le bâtiment, sa caractéristique de feu, et une phrase
    qui dit ce qu'on vient y faire. Rien d'autre.
 
-   L'image est le rendu du modèle, servi en statique: la page ouvre
-   vite, et la 3D vivante n'est chargée qu'à la section d'ascension. */
+   C'est la photographie réelle du phare, détourée de son ciel: le
+   bâtiment se pose directement sur le fond de la page. Le modèle 3D
+   arrive plus bas, quand il sert à situer le visiteur. */
 ---
 
 <section class="lieu haut" id="haut">
   <div class="wrap haut__grille">
     <div class="haut__dire">
       <h1 class="monument haut__titre">
-        <span class="reveal" style="--reveal-delay:60ms">On monte</span>
-        <span class="monument--contre reveal" style="--reveal-delay:170ms">jusqu’à la lampe.</span>
+        <span>On monte</span>
+        <span class="monument--contre">jusqu’à la lampe.</span>
       </h1>
 
-      <p class="dit haut__fait reveal" style="--reveal-delay:290ms">
+      <p class="dit haut__fait">
         Allumé en 1864 à cent vingt-six mètres au dessus de l’Atlantique.
         Premier musée national des Phares et Balises.
       </p>
 
-      <a class="btn haut__cta reveal" style="--reveal-delay:370ms" href="#ascension">
+      <a class="btn haut__cta" href="#ascension">
         Commencer l’ascension
       </a>
     </div>
 
     <figure class="haut__phare">
-      <picture>
-        <source srcset="/media/phare-poster.webp" type="image/webp" />
-        <img
-          src="/media/phare-poster.png"
-          alt="Le Phare des Mamelles: tour cylindrique fuselée sur un corps de logis de deux étages, galerie à garde-corps, lanterne vitrée et dôme à patine."
-          width="1100"
-          height="1380"
-          fetchpriority="high"
-          decoding="async"
-        />
-      </picture>
+      <Photo
+        nom="phare-detoure"
+        alt="Le Phare des Mamelles sur sa colline: tour blanche, lanterne vitrée et dôme, au dessus du corps de logis, des annexes à toiture de tuiles et du mur de soutènement en basalte."
+        width={1100}
+        height={917}
+        repli="png"
+        sizes="(min-width: 62rem) 46vw, 84vw"
+        eager
+      />
       <figcaption class="tech haut__carac">
         <span class="haut__trait"></span>Fl W 5s
       </figcaption>
@@ -49,6 +50,9 @@
     display: grid;
     align-items: end;
     border-bottom: 1px solid var(--filet-franc);
+    /* Le détourage s'arrête net en bas: on le laisse sortir du cadre
+       plutôt que d'exposer une arête horizontale. */
+    overflow: hidden;
   }
 
   .haut__grille {
@@ -66,17 +70,46 @@
   .haut__fait { margin-top: clamp(1rem, 2.4vh, 2.25rem); color: var(--texte-doux); }
   .haut__cta { margin-top: clamp(1.25rem, 3vh, 2.5rem); }
 
-  .haut__phare { position: relative; margin: 0; }
-  .haut__phare img { width: 100%; height: auto; }
+  /* Entrée au chargement. L'ouverture est au dessus de la ligne de
+     flottaison: la faire dépendre d'un observateur de défilement
+     laissait le bouton invisible quand il tombait dans le bas de
+     l'écran. */
+  @media (prefers-reduced-motion: no-preference) {
+    .haut__titre span,
+    .haut__fait,
+    .haut__cta,
+    .haut__phare {
+      animation: monte 760ms var(--ease-out) both;
+    }
+    .haut__titre span:nth-child(1) { animation-delay: 60ms; }
+    .haut__titre span:nth-child(2) { animation-delay: 170ms; }
+    .haut__fait { animation-delay: 290ms; }
+    .haut__cta { animation-delay: 370ms; }
+    .haut__phare { animation: parait 1100ms var(--ease-out) 80ms both; }
+  }
+  @keyframes monte {
+    from { opacity: 0; transform: translate3d(0, 0.45em, 0); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes parait {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .haut__phare {
+    position: relative;
+    margin: 0;
+    align-self: end;
+    margin-bottom: calc(-1 * clamp(1.5rem, 6vh, 4.5rem));
+  }
 
   /* Sur petit écran le repère passe à gauche de la lanterne: à droite
      il viendrait buter sur le bord. */
   .haut__carac {
     position: absolute;
-    right: 62%;
-    top: 15%;
+    left: 41%;
+    top: 20%;
     display: flex;
-    flex-direction: row-reverse;
     align-items: center;
     gap: 0.5rem;
     font-size: 0.6875rem;
@@ -99,18 +132,13 @@
       padding-top: clamp(5rem, 11vh, 7rem);
     }
     .haut__dire { padding-bottom: clamp(0rem, 3vh, 2rem); }
-    .haut__phare img { max-height: 74svh; width: auto; margin-left: auto; }
-    .haut__carac {
-      font-size: 0.75rem;
-      right: auto;
-      left: 62%;
-      flex-direction: row;
-    }
+    .haut__phare { max-height: 78svh; }
+    .haut__carac { font-size: 0.75rem; left: 41%; top: 19%; }
   }
 
   @media (max-width: 61.99rem) {
     .haut__grille { align-content: space-between; gap: 1rem; }
-    .haut__phare { width: 54%; max-width: 15rem; margin-left: auto; margin-top: -0.5rem; }
+    .haut__phare { width: 74%; max-width: 20rem; margin-left: auto; margin-top: -0.5rem; }
     .haut__dire { order: 2; }
   }
 </style>

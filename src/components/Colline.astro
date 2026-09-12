@@ -1,0 +1,85 @@
+---
+import Photo from './Photo.astro';
+
+/* La colline. Elle vient après l'ascension: on a monté la tour, on
+   ressort, et on découvre où elle est posée.
+
+   Les deux vues aériennes disent ce qu'aucun texte ne dit aussi vite:
+   le phare occupe un promontoire isolé, l'Atlantique le cerne sur
+   trois côtés, et une seule route en lacet y monte. */
+---
+
+<section class="lieu section colline" id="la-colline">
+  <div class="wrap">
+    <div class="colline__dire">
+      <p class="tech">14° 42′ N, 17° 30′ O</p>
+      <h2 class="titre colline__titre">C’est la colline<br />qui porte le feu.</h2>
+      <div class="texte colline__texte">
+        <p>
+          La tour ne mesure que seize mètres. Tout le reste de la hauteur,
+          ce sont cent vingt-six mètres de basalte: les Mamelles sont deux
+          collines volcaniques posées à l’extrémité de la presqu’île du
+          Cap-Vert, et le phare occupe la plus haute.
+        </p>
+        <p>
+          À quatre kilomètres de la pointe des Almadies, le point le plus à
+          l’ouest du continent africain.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <Photo
+    nom="phare-promontoire"
+    alt="Le phare vu d’avion: le bâtiment blanc occupe un promontoire couvert de broussaille sèche, l’Atlantique le cerne sur trois côtés."
+    width={1280}
+    height={801}
+    class="colline__large"
+    sizes="100vw"
+  />
+
+  <div class="wrap colline__bas">
+    <Photo
+      nom="colline-aerienne"
+      alt="Vue aérienne de la colline: une seule route en lacet monte jusqu’au phare, la côte de Dakar s’étend derrière."
+      width={638}
+      height={480}
+      class="colline__route"
+      sizes="(min-width: 62rem) 52vw, 100vw"
+    />
+    <p class="colline__note">
+      Une seule route monte. Elle fait le tour de la colline avant
+      d’arriver, ce qui laisse le temps de voir le phare grandir.
+    </p>
+  </div>
+</section>
+
+<style>
+  .colline__dire { max-width: 46rem; }
+  .colline__titre { margin: 1rem 0 1.5rem; }
+  .colline__texte { max-width: 52ch; }
+
+  .colline__large {
+    margin-top: clamp(2.5rem, 7vw, 4.5rem);
+    width: 100%;
+  }
+
+  .colline__bas {
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+    display: grid;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: end;
+  }
+  @media (min-width: 62rem) {
+    .colline__bas { grid-template-columns: 1.1fr 0.9fr; }
+  }
+
+  .colline__note {
+    margin: 0;
+    color: var(--texte-doux);
+    max-width: 34ch;
+    font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.2rem);
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+</style>

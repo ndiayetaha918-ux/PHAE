@@ -46,6 +46,7 @@ export const openingHours = [
 
 export const nav = [
   { href: '#ascension', label: 'L\u2019ascension' },
+  { href: '#la-colline', label: 'La colline' },
   { href: '#le-musee', label: 'Le musée' },
   { href: '#rendez-vous', label: 'Rendez-vous' },
   { href: '#venir', label: 'Venir' },
